@@ -1,0 +1,44 @@
+// que cuando se encuentre con una funcion con await antes! se dentendra todo y espeara a que dicha funcion entrege lo que 
+// tenga que entregar
+
+//Inico y todo !!
+const query = "London";
+const apiKey = "5900311ebb98b8c440db62e9bdb89df9"
+const units = "metric"
+const city = "Santiago"
+
+const urlLatitude = "https://api.openweathermap.org/geo/1.0/direct?appid=" + apiKey + "&limit=5&q=" + city
+// esta parte de la funcion quedara pegada por asi decirlo, hasta que llegue
+const getLatitude = await axios.get(urlLatitude) 
+// la informacion solicitada!
+
+//recojemos los datos que queremos
+const lat1 = getLatitude.data[0].lat 
+const lon1 = getLatitude.data[0].lon
+// const { lat, lon } = getLatitude.data[0] <- lo mismo que lo de arriba pero mas lindiwi :3
+
+// Aca creamos el url con los datos que solicitamos anteriormente
+const url = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat1 + "&lon=" + lon1 + "&appid=" + apiKey + "&units=" + units
+// y ahora solicitamos los datos del tiempo! :D nuevamente con un await antes para que espere la respuesta antes de enviarla
+// como resultado del api rest
+const getWeather = await axios.get(url)
+
+// Datitos que quiero
+const temp = getWeather.data.main.temp
+const description = getWeather.data.weather[0].description
+const icon = getWeather.data.weather[0].icon
+const imageURL = ("http://openweathermap.org/img/wn/"+icon+"@2x.png")
+
+console.log(temp)
+console.log(description)
+
+
+
+//res.write("<p>The city of " +city+ " is currently " + description + "</p>")
+//res.write( "<h1>The tempeture in "+ city + " is " + temp + " degrees Celcius</h1>")
+//res.write("<img src=" + imageURL + ">")
+
+res.send()
+
+// Enviamos los datos como respuesta :D
+res.json({ message: getWeather.data })
